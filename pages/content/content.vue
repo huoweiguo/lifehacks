@@ -16,8 +16,7 @@
       <view class="nav-right"></view>
     </view>
 
-    <swiper class="cover-swiper" :indicator-dots="true" :autoplay="true" :interval="4000" :duration="500"
-      indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff">
+    <swiper class="cover-swiper" :indicator-dots="true" :autoplay="true" :interval="4000" :duration="500" indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff">
       <swiper-item v-for="(img, index) in coverImages" :key="index" @click="previewImage(index)">
         <image class="cover-image" :src="img" mode="aspectFill"></image>
       </swiper-item>
@@ -74,7 +73,8 @@
             </text>
           </view>
           <view class="comment-actions">
-            <text class="comment-time">{{ comment.time }}
+            <text class="comment-time"
+              >{{ comment.time }}
               <text class="comment-reply">回复</text>
             </text>
             <view class="action-item">
@@ -83,17 +83,14 @@
             </view>
           </view>
           <view v-if="comment.replies && comment.replies.length > 0" class="replies-section">
-            <view
-              v-for="(reply, rIndex) in (expandedReplies.includes(index) ? comment.replies : comment.replies.slice(0, 2))"
-              :key="rIndex" class="reply-item">
+            <view v-for="(reply, rIndex) in expandedReplies.includes(index) ? comment.replies : comment.replies.slice(0, 2)" :key="rIndex" class="reply-item">
               <view class="reply-avatar">
                 <text class="reply-avatar-text">{{ reply.author[0] }}</text>
               </view>
               <view class="reply-content">
                 <view class="reply-author-row">
                   <text class="reply-author">{{ reply.author }}</text>
-                  <image v-if="reply.toAuthor" class="reply-arrow-icon" src="/static/images/react.png"
-                    mode="aspectFit" />
+                  <image v-if="reply.toAuthor" class="reply-arrow-icon" src="/static/images/react.png" mode="aspectFit" />
                   <text v-if="reply.toAuthor" class="reply-to-author">{{ reply.toAuthor }}</text>
                 </view>
                 <text class="reply-text">{{ reply.content }}</text>
@@ -101,15 +98,14 @@
                   <text class="reply-time">{{ reply.time }} <text class="reply-reply-btn">回复</text></text>
                   <view class="reply-action-item">
                     <image class="action-icon" src="/static/images/heart.png" mode="aspectFit" />
-                    <text class="reply-action-text">{{ reply.likes || '0' }}</text>
+                    <text class="reply-action-text">{{ reply.likes || "0" }}</text>
                   </view>
                 </view>
               </view>
             </view>
             <view v-if="comment.replies.length > 2" class="expand-replies" @click="toggleReplies(index)">
               <view class="expand-line"></view>
-              <text class="expand-text">{{ expandedReplies.includes(index) ? '收起' : `展开${comment.replies.length}条回复`
-              }}</text>
+              <text class="expand-text">{{ expandedReplies.includes(index) ? "收起" : `展开${comment.replies.length}条回复` }}</text>
               <view class="expand-line"></view>
             </view>
           </view>
@@ -119,8 +115,7 @@
 
     <view class="bottom-bar">
       <view class="bottom-input">
-        <input class="input-field" placeholder="说点什么..." placeholder-class="input-placeholder" v-model="inputText"
-          @click="showMask" />
+        <text class="input-field" placeholder-class="input-placeholder" @click="showMask">说点什么...</text>
       </view>
       <view class="bottom-actions">
         <view class="action-btn" :class="{ active: isLiked }" @click="toggleLike">
@@ -142,8 +137,15 @@
 
     <view v-if="maskVisible" class="mask-layer" @click="hideMask">
       <view class="mask-content" @click.stop>
-        <textarea class="mask-input-field" placeholder="有什么想法，展开说说" placeholder-class="mask-input-placeholder"
-          v-model="maskInputText" :focus="maskVisible" @click.stop />
+        <input
+          class="mask-input-field"
+          placeholder="有什么想法，展开说说"
+          cursor-spacing="180rpx"
+          placeholder-class="mask-input-placeholder"
+          v-model="maskInputText"
+          :focus="maskVisible"
+          @click.stop
+        />
 
         <view v-if="uploadedImages.length > 0" class="mask-images-preview">
           <view v-for="(img, index) in uploadedImages" :key="index" class="preview-image-item">
@@ -160,8 +162,7 @@
               <image class="mask-icon" src="/static/images/pic.png" mode="aspectFit" />
             </view>
           </view>
-          <view class="mask-send-btn" :class="{ active: maskInputText.trim() || uploadedImages.length > 0 }"
-            @click.stop="sendReply">
+          <view class="mask-send-btn" :class="{ active: maskInputText.trim() || uploadedImages.length > 0 }" @click.stop="sendReply">
             <text class="mask-send-text">发送</text>
           </view>
         </view>
@@ -174,9 +175,9 @@
 export default {
   data() {
     return {
-      inputText: '',
+      inputText: "",
       maskVisible: false,
-      maskInputText: '',
+      maskInputText: "",
       uploadedImages: [],
       isLiked: false,
       isCollected: false,
@@ -184,184 +185,184 @@ export default {
       collectCount: 134,
       shareCount: 89,
       coverImages: [
-        'https://gips0.baidu.com/it/u=3088465159,2087256888&fm=3074&app=3074&f=JPEG?w=1298&h=1689&type=normal&func=T',
-        'https://img0.baidu.com/it/u=2305867823,4064004191&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=750',
-        'https://img0.baidu.com/it/u=3411005750,1717082041&fm=253&app=138&f=JPEG?w=500&h=638'
+        "https://gips0.baidu.com/it/u=3088465159,2087256888&fm=3074&app=3074&f=JPEG?w=1298&h=1689&type=normal&func=T",
+        "https://img0.baidu.com/it/u=2305867823,4064004191&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=750",
+        "https://img0.baidu.com/it/u=3411005750,1717082041&fm=253&app=138&f=JPEG?w=500&h=638",
       ],
       article: {
-        title: '冰箱收纳的新思维：空间利用率提升200%的秘诀',
-        tags: ['生活技巧', '收纳整理', '居家生活'],
-        date: '2024-10-24',
-        views: '4.2k',
-        likes: '622',
-        author: '生活小达人',
-        authorDesc: '专注生活技巧分享',
+        title: "冰箱收纳的新思维：空间利用率提升200%的秘诀",
+        tags: ["生活技巧", "收纳整理", "居家生活"],
+        date: "2024-10-24",
+        views: "4.2k",
+        likes: "622",
+        author: "生活小达人",
+        authorDesc: "专注生活技巧分享",
         content: [
-          '很多人在整理冰箱时，习惯于把东西塞满整个空间。但这种做法不仅会让冰箱看起来杂乱无章，更重要的是，它会严重影响冰箱的制冷效率和食物的新鲜度。今天，我将为大家介绍一种全新的冰箱收纳思维，让你的冰箱空间利用率提升200%。',
-          '首先，我们需要改变传统的收纳观念。很多人认为冰箱就是用来存放食物的地方，但实际上，冰箱更是一个需要精心规划的小仓库。通过合理的分区和收纳工具，我们可以让冰箱不仅看起来整洁美观，更能让每一寸空间都发挥最大的作用。'
+          "很多人在整理冰箱时，习惯于把东西塞满整个空间。但这种做法不仅会让冰箱看起来杂乱无章，更重要的是，它会严重影响冰箱的制冷效率和食物的新鲜度。今天，我将为大家介绍一种全新的冰箱收纳思维，让你的冰箱空间利用率提升200%。",
+          "首先，我们需要改变传统的收纳观念。很多人认为冰箱就是用来存放食物的地方，但实际上，冰箱更是一个需要精心规划的小仓库。通过合理的分区和收纳工具，我们可以让冰箱不仅看起来整洁美观，更能让每一寸空间都发挥最大的作用。",
         ],
-        tip: '小贴士：冰箱的最佳储存温度是2-5摄氏度，定期清理过期食物，保持冰箱内部通风，可以有效延长食物保质期。',
+        tip: "小贴士：冰箱的最佳储存温度是2-5摄氏度，定期清理过期食物，保持冰箱内部通风，可以有效延长食物保质期。",
         content2: [
-          '利用收纳盒和保鲜盒是提高冰箱空间利用率的关键。选择透明的收纳盒，可以让你清楚地看到里面的食物，避免遗忘和浪费。同时，收纳盒还能防止食物串味，保持食物的新鲜。',
-          '另外，冰箱门是一个很容易被忽视的黄金位置。冰箱门的最佳使用率在70%-80%为最佳，这不仅是为了美观，更是为了让冰箱的压缩机高效运行。'
-        ]
+          "利用收纳盒和保鲜盒是提高冰箱空间利用率的关键。选择透明的收纳盒，可以让你清楚地看到里面的食物，避免遗忘和浪费。同时，收纳盒还能防止食物串味，保持食物的新鲜。",
+          "另外，冰箱门是一个很容易被忽视的黄金位置。冰箱门的最佳使用率在70%-80%为最佳，这不仅是为了美观，更是为了让冰箱的压缩机高效运行。",
+        ],
       },
       expandedReplies: [],
       comments: [
         {
-          author: '美食小美',
-          time: '2小时前',
-          content: '学到了！原来冰箱还有这么多讲究，收藏了！',
-          likes: '23',
+          author: "美食小美",
+          time: "2小时前",
+          content: "学到了！原来冰箱还有这么多讲究，收藏了！",
+          likes: "23",
           replies: [
-            { author: '整理控悦悦', toAuthor: '美食小美', content: '对呀，我也觉得很实用！', time: '1小时前', likes: '8' },
-            { author: '居家设计师', content: '收藏+1', time: '30分钟前', likes: '5' },
-            { author: '生活小能手', toAuthor: '整理控悦悦', content: '好的，我也去试试！', time: '20分钟前', likes: '3' },
-            { author: '厨房达人', content: '这个方法真的很棒', time: '15分钟前', likes: '6' }
-          ]
+            { author: "整理控悦悦", toAuthor: "美食小美", content: "对呀，我也觉得很实用！", time: "1小时前", likes: "8" },
+            { author: "居家设计师", content: "收藏+1", time: "30分钟前", likes: "5" },
+            { author: "生活小能手", toAuthor: "整理控悦悦", content: "好的，我也去试试！", time: "20分钟前", likes: "3" },
+            { author: "厨房达人", content: "这个方法真的很棒", time: "15分钟前", likes: "6" },
+          ],
         },
         {
-          author: '整理控悦悦',
-          time: '5小时前',
-          content: '我家冰箱也是这样整理的，效果真的很好！强烈推荐大家都试试，现在一目了然。',
-          likes: '45',
+          author: "整理控悦悦",
+          time: "5小时前",
+          content: "我家冰箱也是这样整理的，效果真的很好！强烈推荐大家都试试，现在一目了然。",
+          likes: "45",
           replies: [
-            { author: '美食小美', content: '太棒了！', time: '4小时前', likes: '12' },
-            { author: '生活小达人', content: '感谢分享！', time: '3小时前', likes: '9' }
-          ]
+            { author: "美食小美", content: "太棒了！", time: "4小时前", likes: "12" },
+            { author: "生活小达人", content: "感谢分享！", time: "3小时前", likes: "9" },
+          ],
         },
         {
-          author: '居家设计师',
-          time: '昨天',
-          content: '哈哈，收藏了！',
-          likes: '12',
-          replies: []
+          author: "居家设计师",
+          time: "昨天",
+          content: "哈哈，收藏了！",
+          likes: "12",
+          replies: [],
         },
         {
-          author: '生活小能手',
-          time: '昨天',
-          content: '试了一下，空间真的大了很多！',
-          likes: '31',
+          author: "生活小能手",
+          time: "昨天",
+          content: "试了一下，空间真的大了很多！",
+          likes: "31",
           replies: [
-            { author: '厨房达人', content: '效果这么好吗？', time: '昨天', likes: '7' },
-            { author: '整理控悦悦', content: '是的，我也试过', time: '昨天', likes: '4' },
-            { author: '数码小王子', content: '改天试试', time: '昨天', likes: '2' },
-            { author: '美食小美', content: '期待你的反馈！', time: '昨天', likes: '6' },
-            { author: '居家设计师', content: '我也准备试', time: '今天', likes: '1' }
-          ]
+            { author: "厨房达人", content: "效果这么好吗？", time: "昨天", likes: "7" },
+            { author: "整理控悦悦", content: "是的，我也试过", time: "昨天", likes: "4" },
+            { author: "数码小王子", content: "改天试试", time: "昨天", likes: "2" },
+            { author: "美食小美", content: "期待你的反馈！", time: "昨天", likes: "6" },
+            { author: "居家设计师", content: "我也准备试", time: "今天", likes: "1" },
+          ],
         },
         {
-          author: '厨房达人',
-          time: '2天前',
-          content: '一直都是这样整理，确实冰箱很有动力工作了。',
-          likes: '28',
-          replies: []
+          author: "厨房达人",
+          time: "2天前",
+          content: "一直都是这样整理，确实冰箱很有动力工作了。",
+          likes: "28",
+          replies: [],
         },
         {
-          author: '数码小王子',
-          time: '2天前',
-          content: '这篇文章太棒了，收藏了好好看。',
-          likes: '19'
+          author: "数码小王子",
+          time: "2天前",
+          content: "这篇文章太棒了，收藏了好好看。",
+          likes: "19",
         },
         {
-          author: '健康养生家',
-          time: '3天前',
-          content: '收藏了，这个收纳盒在哪里买？',
-          likes: '15'
-        }
-      ]
-    }
+          author: "健康养生家",
+          time: "3天前",
+          content: "收藏了，这个收纳盒在哪里买？",
+          likes: "15",
+        },
+      ],
+    };
   },
   methods: {
     goBack() {
-      uni.navigateBack()
+      uni.navigateBack();
     },
     showMask() {
-      this.maskVisible = true
+      this.maskVisible = true;
     },
     hideMask() {
-      this.maskVisible = false
-      this.maskInputText = ''
-      this.uploadedImages = []
+      this.maskVisible = false;
+      this.maskInputText = "";
+      this.uploadedImages = [];
     },
     uploadImage() {
       uni.chooseImage({
         count: 9,
         success: (res) => {
-          this.uploadedImages = this.uploadedImages.concat(res.tempFilePaths)
+          this.uploadedImages = this.uploadedImages.concat(res.tempFilePaths);
           uni.showToast({
-            title: '图片上传成功',
-            icon: 'success'
-          })
+            title: "图片上传成功",
+            icon: "success",
+          });
         },
         fail: () => {
           uni.showToast({
-            title: '图片上传失败',
-            icon: 'none'
-          })
-        }
-      })
+            title: "图片上传失败",
+            icon: "none",
+          });
+        },
+      });
     },
     removeImage(index) {
-      this.uploadedImages.splice(index, 1)
+      this.uploadedImages.splice(index, 1);
     },
     sendReply() {
       if (this.maskInputText.trim() || this.uploadedImages.length > 0) {
         uni.showToast({
-          title: '发送成功',
-          icon: 'success'
-        })
-        this.hideMask()
+          title: "发送成功",
+          icon: "success",
+        });
+        this.hideMask();
       }
     },
     sendComment() {
       if (this.inputText.trim()) {
         uni.showToast({
-          title: '评论成功',
-          icon: 'success'
-        })
-        this.inputText = ''
+          title: "评论成功",
+          icon: "success",
+        });
+        this.inputText = "";
       }
     },
     previewImage(index) {
       uni.previewImage({
         urls: this.coverImages,
-        current: this.coverImages[index]
-      })
+        current: this.coverImages[index],
+      });
     },
     toggleReplies(index) {
-      const idx = this.expandedReplies.indexOf(index)
+      const idx = this.expandedReplies.indexOf(index);
       if (idx > -1) {
-        this.expandedReplies.splice(idx, 1)
+        this.expandedReplies.splice(idx, 1);
       } else {
-        this.expandedReplies.push(index)
+        this.expandedReplies.push(index);
       }
     },
     toggleLike() {
-      this.isLiked = !this.isLiked
-      this.likeCount += this.isLiked ? 1 : -1
+      this.isLiked = !this.isLiked;
+      this.likeCount += this.isLiked ? 1 : -1;
       uni.showToast({
-        title: this.isLiked ? '点赞成功' : '取消点赞',
-        icon: 'none'
-      })
+        title: this.isLiked ? "点赞成功" : "取消点赞",
+        icon: "none",
+      });
     },
     toggleCollect() {
-      this.isCollected = !this.isCollected
-      this.collectCount += this.isCollected ? 1 : -1
+      this.isCollected = !this.isCollected;
+      this.collectCount += this.isCollected ? 1 : -1;
       uni.showToast({
-        title: this.isCollected ? '收藏成功' : '取消收藏',
-        icon: 'none'
-      })
+        title: this.isCollected ? "收藏成功" : "取消收藏",
+        icon: "none",
+      });
     },
     shareArticle() {
-      this.shareCount += 1
+      this.shareCount += 1;
       uni.showToast({
-        title: '转发成功',
-        icon: 'none'
-      })
-    }
-  }
-}
+        title: "转发成功",
+        icon: "none",
+      });
+    },
+  },
+};
 </script>
 
 <style>
@@ -522,7 +523,6 @@ export default {
   color: #fff;
   font-weight: bold;
 }
-
 
 .article-body {
   margin-bottom: 40rpx;
@@ -851,11 +851,12 @@ export default {
 .input-field {
   flex: 1;
   height: 72rpx;
+  line-height: 72rpx;
   background: #333;
   border-radius: 36rpx;
   padding: 0 24rpx;
   font-size: 26rpx;
-  color: #fff;
+  color: #666;
 }
 
 .input-placeholder {
@@ -886,12 +887,13 @@ export default {
   bottom: 0;
   background: rgba(0, 0, 0, 0.6);
   z-index: 1000;
-  display: flex;
-  align-items: flex-end;
 }
 
 .mask-content {
-  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   background: #2a2a2a;
   padding: 20rpx;
   padding-bottom: calc(20rpx + constant(safe-area-inset-bottom));
@@ -901,15 +903,12 @@ export default {
 }
 
 .mask-input-field {
-  width: 100%;
-  height: 180rpx;
   background: #333;
   border-radius: 10rpx;
-  padding: 0 32rpx;
+  padding: 16rpx 32rpx;
   font-size: 28rpx;
   color: #fff;
   margin-bottom: 20rpx;
-  box-sizing: border-box;
 }
 
 .mask-input-placeholder {
