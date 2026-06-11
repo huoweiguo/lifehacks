@@ -10,13 +10,14 @@
         </view>
         <text class="nav-author">{{ article.author }}</text>
         <view class="nav-follow-btn">
-          <text class="follow-text">+关注</text>
+          <text class="follow-text">关注</text>
         </view>
       </view>
       <view class="nav-right"></view>
     </view>
 
-    <swiper class="cover-swiper" :indicator-dots="true" :autoplay="true" :interval="4000" :duration="500" indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff">
+    <swiper class="cover-swiper" :indicator-dots="true" :autoplay="true" :interval="4000" :duration="500"
+      indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff">
       <swiper-item v-for="(img, index) in coverImages" :key="index" @click="previewImage(index)">
         <image class="cover-image" :src="img" mode="aspectFill"></image>
       </swiper-item>
@@ -55,63 +56,8 @@
       </view>
     </view>
 
-    <view class="comments-section">
-      <view class="comments-header">
-        <text class="comments-title">评论 ({{ comments.length }})</text>
-      </view>
-      <view v-for="(comment, index) in comments" :key="index" class="comment-item">
-        <view class="comment-avatar">
-          <text class="avatar-text">{{ comment.author[0] }}</text>
-        </view>
-        <view class="comment-content">
-          <view class="comment-header">
-            <text class="comment-author">{{ comment.author }}</text>
-          </view>
-          <view class="comment-text-row">
-            <text class="comment-text">
-              {{ comment.content }}
-            </text>
-          </view>
-          <view class="comment-actions">
-            <text class="comment-time"
-              >{{ comment.time }}
-              <text class="comment-reply">回复</text>
-            </text>
-            <view class="action-item">
-              <image class="action-icon" src="/static/images/heart.png" mode="aspectFit" />
-              <text class="action-text">{{ comment.likes }}</text>
-            </view>
-          </view>
-          <view v-if="comment.replies && comment.replies.length > 0" class="replies-section">
-            <view v-for="(reply, rIndex) in expandedReplies.includes(index) ? comment.replies : comment.replies.slice(0, 2)" :key="rIndex" class="reply-item">
-              <view class="reply-avatar">
-                <text class="reply-avatar-text">{{ reply.author[0] }}</text>
-              </view>
-              <view class="reply-content">
-                <view class="reply-author-row">
-                  <text class="reply-author">{{ reply.author }}</text>
-                  <image v-if="reply.toAuthor" class="reply-arrow-icon" src="/static/images/react.png" mode="aspectFit" />
-                  <text v-if="reply.toAuthor" class="reply-to-author">{{ reply.toAuthor }}</text>
-                </view>
-                <text class="reply-text">{{ reply.content }}</text>
-                <view class="reply-actions">
-                  <text class="reply-time">{{ reply.time }} <text class="reply-reply-btn">回复</text></text>
-                  <view class="reply-action-item">
-                    <image class="action-icon" src="/static/images/heart.png" mode="aspectFit" />
-                    <text class="reply-action-text">{{ reply.likes || "0" }}</text>
-                  </view>
-                </view>
-              </view>
-            </view>
-            <view v-if="comment.replies.length > 2" class="expand-replies" @click="toggleReplies(index)">
-              <view class="expand-line"></view>
-              <text class="expand-text">{{ expandedReplies.includes(index) ? "收起" : `展开${comment.replies.length}条回复` }}</text>
-              <view class="expand-line"></view>
-            </view>
-          </view>
-        </view>
-      </view>
-    </view>
+    <view class="comment-total">共{{ commentCount }}条评论</view>
+    <CommentSection :comments="comments" />
 
     <view class="bottom-bar">
       <view class="bottom-input">
@@ -135,55 +81,28 @@
       </view>
     </view>
 
-    <view v-if="maskVisible" class="mask-layer" @click="hideMask">
-      <view class="mask-content" @click.stop>
-        <input
-          class="mask-input-field"
-          placeholder="有什么想法，展开说说"
-          cursor-spacing="180rpx"
-          placeholder-class="mask-input-placeholder"
-          v-model="maskInputText"
-          :focus="maskVisible"
-          @click.stop
-        />
-
-        <view v-if="uploadedImages.length > 0" class="mask-images-preview">
-          <view v-for="(img, index) in uploadedImages" :key="index" class="preview-image-item">
-            <image class="preview-image" :src="img" mode="aspectFill" />
-            <view class="preview-delete" @click.stop="removeImage(index)">
-              <text class="delete-text">×</text>
-            </view>
-          </view>
-        </view>
-
-        <view class="mask-actions">
-          <view class="mask-icons">
-            <view class="mask-icon-btn" @click.stop="uploadImage">
-              <image class="mask-icon" src="/static/images/pic.png" mode="aspectFit" />
-            </view>
-          </view>
-          <view class="mask-send-btn" :class="{ active: maskInputText.trim() || uploadedImages.length > 0 }" @click.stop="sendReply">
-            <text class="mask-send-text">发送</text>
-          </view>
-        </view>
-      </view>
-    </view>
+    <ReplyModal :visible="maskVisible" @close="hideMask" @send="handleReply" />
   </view>
 </template>
 
 <script>
+import CommentSection from '@/components/CommentSection.vue';
+import ReplyModal from '@/components/ReplyModal.vue';
+
 export default {
+  components: {
+    CommentSection,
+    ReplyModal
+  },
   data() {
     return {
-      inputText: "",
       maskVisible: false,
-      maskInputText: "",
-      uploadedImages: [],
       isLiked: false,
       isCollected: false,
       likeCount: 622,
       collectCount: 134,
       shareCount: 89,
+      commentCount: 234,
       coverImages: [
         "https://gips0.baidu.com/it/u=3088465159,2087256888&fm=3074&app=3074&f=JPEG?w=1298&h=1689&type=normal&func=T",
         "https://img0.baidu.com/it/u=2305867823,4064004191&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=750",
@@ -207,7 +126,6 @@ export default {
           "另外，冰箱门是一个很容易被忽视的黄金位置。冰箱门的最佳使用率在70%-80%为最佳，这不仅是为了美观，更是为了让冰箱的压缩机高效运行。",
         ],
       },
-      expandedReplies: [],
       comments: [
         {
           author: "美食小美",
@@ -282,61 +200,18 @@ export default {
     },
     hideMask() {
       this.maskVisible = false;
-      this.maskInputText = "";
-      this.uploadedImages = [];
     },
-    uploadImage() {
-      uni.chooseImage({
-        count: 9,
-        success: (res) => {
-          this.uploadedImages = this.uploadedImages.concat(res.tempFilePaths);
-          uni.showToast({
-            title: "图片上传成功",
-            icon: "success",
-          });
-        },
-        fail: () => {
-          uni.showToast({
-            title: "图片上传失败",
-            icon: "none",
-          });
-        },
+    handleReply(data) {
+      uni.showToast({
+        title: "发送成功",
+        icon: "success",
       });
-    },
-    removeImage(index) {
-      this.uploadedImages.splice(index, 1);
-    },
-    sendReply() {
-      if (this.maskInputText.trim() || this.uploadedImages.length > 0) {
-        uni.showToast({
-          title: "发送成功",
-          icon: "success",
-        });
-        this.hideMask();
-      }
-    },
-    sendComment() {
-      if (this.inputText.trim()) {
-        uni.showToast({
-          title: "评论成功",
-          icon: "success",
-        });
-        this.inputText = "";
-      }
     },
     previewImage(index) {
       uni.previewImage({
         urls: this.coverImages,
         current: this.coverImages[index],
       });
-    },
-    toggleReplies(index) {
-      const idx = this.expandedReplies.indexOf(index);
-      if (idx > -1) {
-        this.expandedReplies.splice(idx, 1);
-      } else {
-        this.expandedReplies.push(index);
-      }
     },
     toggleLike() {
       this.isLiked = !this.isLiked;
@@ -560,217 +435,11 @@ export default {
   line-height: 1.6;
 }
 
-.comments-section {
-  padding: 0 30rpx;
-}
-
-.comments-header {
-  margin-bottom: 20rpx;
-}
-
-.comments-title {
+.comment-total {
   font-size: 32rpx;
-  color: #fff;
   font-weight: bold;
-}
-
-.comment-item {
-  display: flex;
-  padding: 24rpx 0;
-  border-bottom: 1rpx solid #333;
-}
-
-.comment-item:last-child {
-  border-bottom: none;
-}
-
-.comment-avatar {
-  width: 72rpx;
-  height: 72rpx;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 20rpx;
-  flex-shrink: 0;
-}
-
-.comment-content {
-  flex: 1;
-}
-
-.comment-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12rpx;
-}
-
-.comment-author {
-  font-size: 24rpx;
-  color: #999;
-  font-weight: 500;
-}
-
-.comment-time {
-  font-size: 22rpx;
-  color: #666;
-}
-
-.comment-text-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 20rpx;
-  margin-bottom: 16rpx;
-}
-
-.comment-text {
-  flex: 1;
-  font-size: 28rpx;
   color: #fff;
-  line-height: 1.6;
-}
-
-.comment-reply {
-  font-size: 24rpx;
-  color: #999;
-  margin-left: 10rpx;
-}
-
-.comment-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.action-item {
-  display: flex;
-  align-items: center;
-  gap: 8rpx;
-}
-
-.replies-section {
-  margin-top: 16rpx;
-}
-
-.reply-item {
-  display: flex;
-  gap: 12rpx;
-  margin-bottom: 16rpx;
-}
-
-.reply-avatar {
-  width: 48rpx;
-  height: 48rpx;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.reply-avatar-text {
-  font-size: 24rpx;
-  color: #fff;
-}
-
-.reply-content {
-  flex: 1;
-  padding: 0 16rpx;
-}
-
-.reply-author-row {
-  display: flex;
-  align-items: center;
-  gap: 8rpx;
-  margin-bottom: 8rpx;
-}
-
-.reply-author {
-  font-size: 24rpx;
-  color: #999;
-  font-weight: 500;
-}
-
-.reply-arrow-icon {
-  width: 32rpx;
-  height: 32rpx;
-}
-
-.reply-to-author {
-  font-size: 24rpx;
-  color: #999;
-}
-
-.reply-text {
-  font-size: 28rpx;
-  color: #fff;
-  line-height: 1.5;
-  display: block;
-  margin-bottom: 12rpx;
-}
-
-.reply-actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20rpx;
-}
-
-.reply-time {
-  font-size: 22rpx;
-  color: #666;
-}
-
-.reply-action-item {
-  display: flex;
-  align-items: center;
-  gap: 6rpx;
-}
-
-.reply-action-icon {
-  font-size: 22rpx;
-}
-
-.reply-action-text {
-  font-size: 22rpx;
-  color: #666;
-}
-
-.reply-reply-btn {
-  font-size: 24rpx;
-  color: #999;
-  margin-left: 10rpx;
-}
-
-.expand-replies {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-  padding: 8rpx 0;
-}
-
-.expand-line {
-  flex: 1;
-  height: 1rpx;
-  background: #333;
-}
-
-.expand-text {
-  font-size: 22rpx;
-  color: #fff;
-}
-
-.action-icon {
-  width: 32rpx;
-  height: 32rpx;
-}
-
-.action-text {
-  font-size: 24rpx;
-  color: #999;
+  margin: 20rpx;
 }
 
 .bottom-bar {
@@ -818,6 +487,8 @@ export default {
 
 .action-icon {
   font-size: 36rpx;
+  width: 32rpx;
+  height: 32rpx;
 }
 
 .action-btn.active .action-icon {
@@ -861,143 +532,5 @@ export default {
 
 .input-placeholder {
   color: #666;
-}
-
-.send-icon {
-  font-size: 28rpx;
-  color: #fff;
-  font-weight: bold;
-  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
-}
-
-.send-text {
-  font-size: 28rpx;
-  color: #999;
-}
-
-.send-btn.active .send-text {
-  color: #fff;
-}
-
-.mask-layer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 1000;
-}
-
-.mask-content {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #2a2a2a;
-  padding: 20rpx;
-  padding-bottom: calc(20rpx + constant(safe-area-inset-bottom));
-  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
-  border-top-left-radius: 32rpx;
-  border-top-right-radius: 32rpx;
-}
-
-.mask-input-field {
-  background: #333;
-  border-radius: 10rpx;
-  padding: 16rpx 32rpx;
-  font-size: 28rpx;
-  color: #fff;
-  margin-bottom: 20rpx;
-}
-
-.mask-input-placeholder {
-  color: #ccc;
-}
-
-.mask-images-preview {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16rpx;
-  margin-bottom: 20rpx;
-}
-
-.preview-image-item {
-  position: relative;
-  width: 80rpx;
-  height: 80rpx;
-}
-
-.preview-image {
-  width: 100%;
-  height: 100%;
-  border-radius: 10rpx;
-}
-
-.preview-delete {
-  position: absolute;
-  top: -16rpx;
-  right: -16rpx;
-  width: 40rpx;
-  height: 40rpx;
-  background: rgba(0, 0, 0, 0.6);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.delete-text {
-  font-size: 32rpx;
-  color: #fff;
-  line-height: 1;
-}
-
-.mask-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.mask-icons {
-  display: flex;
-  gap: 40rpx;
-}
-
-.mask-icon-btn {
-  width: 72rpx;
-  height: 72rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.mask-icon {
-  width: 48rpx;
-  height: 48rpx;
-}
-
-.mask-send-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 28rpx;
-  height: 60rpx;
-  background: #999;
-  border-radius: 30rpx;
-  transition: all 0.3s;
-}
-
-.mask-send-btn.active {
-  background: #e53935;
-}
-
-.mask-send-text {
-  font-size: 28rpx;
-  color: #333;
-}
-
-.mask-send-btn.active .mask-send-text {
-  color: #fff;
 }
 </style>
