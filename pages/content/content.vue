@@ -267,7 +267,6 @@ export default {
   height: 60rpx;
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 
 .back-icon {

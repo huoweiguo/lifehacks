@@ -344,7 +344,6 @@ export default {
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 
 .back-icon {
