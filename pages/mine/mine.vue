@@ -7,14 +7,18 @@
       <view class="nav-center">
         <text class="nav-title">我的</text>
       </view>
-      <view class="nav-right" @click="goToSettings">
-        <image class="settings-icon" src="/static/images/settings.png" mode="aspectFit" />
-      </view>
+      <view class="nav-right"></view>
     </view>
 
     <view v-if="isDrawerOpen" class="drawer-mask" @click="closeDrawer"></view>
     <view class="drawer-panel" :class="{ 'show': isDrawerOpen }">
       <view class="drawer-content">
+        <view class="drawer-card">
+          <view class="drawer-item" @click="handleDrawerItem('addFriend')">
+            <image class="drawer-icon" src="/static/images/addfriend.png" mode="aspectFit" />
+            <text class="drawer-text">添加好友</text>
+          </view>
+        </view>
         <view class="drawer-card">
           <view class="drawer-item" @click="handleDrawerItem('addFriend')">
             <image class="drawer-icon" src="/static/images/account.png" mode="aspectFit" />
@@ -137,7 +141,7 @@
       <view class="community-section">
         <view class="community-content">
           <view class="community-info">
-            <text class="community-title">加入妙招社区</text>
+            <text class="community-title">加入妙囊社区</text>
             <text class="community-desc">分享你的生活智慧，赢取年度达人勋章。</text>
             <view class="upgrade-btn" @click="handleUpgrade">
               <text class="upgrade-text">立即升级</text>
@@ -167,7 +171,7 @@ export default {
       bioText: '请完善个人简介',
       isEditingBio: false,
       isDrawerOpen: false,
-      userName: '妙招达人',
+      userName: '妙囊达人',
       isEditingName: false,
       imgurl1: '/static/images/avator.png',
     };
@@ -231,7 +235,7 @@ export default {
     saveName() {
       this.isEditingName = false;
       if (!this.userName.trim()) {
-        this.userName = '妙招达人';
+        this.userName = '妙囊达人';
       }
     },
     changeAvatar() {

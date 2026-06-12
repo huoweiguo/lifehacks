@@ -7,6 +7,7 @@
       <view class="nav-center">
         <text class="nav-title">我的粉丝({{ fans.length }})</text>
       </view>
+      <view class="nav-right"></view>
     </view>
 
     <scroll-view scroll-y class="fans-list" @scrolltolower="loadMoreFans">
@@ -167,8 +168,8 @@ export default {
 }
 
 .back-icon {
-  width: 36rpx;
-  height: 36rpx;
+  width: 40rpx;
+  height: 40rpx;
 }
 
 .nav-center {
@@ -181,6 +182,7 @@ export default {
   font-weight: bold;
   color: #fff;
 }
+
 
 .fans-list {
   height: calc(100vh - 88rpx - constant(safe-area-inset-top) - constant(safe-area-inset-bottom));

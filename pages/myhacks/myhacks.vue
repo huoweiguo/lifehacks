@@ -5,7 +5,7 @@
         <image class="back-icon" src="/static/images/left.png" mode="aspectFit" />
       </view>
       <view class="nav-center">
-        <text class="nav-title">我的妙招</text>
+        <text class="nav-title">我的妙囊</text>
       </view>
       <view class="nav-right"></view>
     </view>

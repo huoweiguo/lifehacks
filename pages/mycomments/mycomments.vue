@@ -91,7 +91,7 @@ export default {
         {
           id: 1,
           type: 'comment',
-          author: '妙招达人',
+          author: '妙囊达人',
           targetTitle: '夏日旅行必备攻略',
           content: '写得太好了！收藏了，下次旅行就用这个攻略',
           time: '2小时前',
@@ -102,7 +102,7 @@ export default {
         {
           id: 2,
           type: 'reply',
-          author: '妙招达人',
+          author: '妙囊达人',
           targetTitle: '简单又美味的家常菜做法',
           replyTo: '美食达人',
           content: '好的，周末试试做给家人吃',
@@ -114,7 +114,7 @@ export default {
         {
           id: 3,
           type: 'comment',
-          author: '妙招达人',
+          author: '妙囊达人',
           targetTitle: '夏季穿搭指南',
           content: '学到了很多搭配技巧，谢谢分享！',
           time: '2天前',
@@ -125,7 +125,7 @@ export default {
         {
           id: 4,
           type: 'reply',
-          author: '妙招达人',
+          author: '妙囊达人',
           targetTitle: '居家健身计划',
           replyTo: '健身教练',
           content: '跟着练了一周，确实有效果！',
@@ -137,7 +137,7 @@ export default {
         {
           id: 5,
           type: 'comment',
-          author: '妙招达人',
+          author: '妙囊达人',
           targetTitle: '推荐5本值得一读的好书',
           content: '书单收藏了，慢慢看',
           time: '1周前',
@@ -148,7 +148,7 @@ export default {
         {
           id: 6,
           type: 'comment',
-          author: '妙招达人',
+          author: '妙囊达人',
           targetTitle: '最新数码产品评测',
           content: '很详细的评测，帮我决定了买哪款',
           time: '1周前',
@@ -159,7 +159,7 @@ export default {
         {
           id: 7,
           type: 'reply',
-          author: '妙招达人',
+          author: '妙囊达人',
           targetTitle: '夏日旅行必备攻略',
           replyTo: '旅行达人',
           content: '请问酒店是提前多久订的？',

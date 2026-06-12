@@ -76,14 +76,14 @@ export default {
 			messages: [
 				{
 					author: '极简主义者',
-					action: '评论了你的妙招',
+					action: '评论了你的妙囊',
 					content: '"这个关于厨房收纳的技巧真的很实用，帮我省了不少空间！"',
 					time: '昨天 12:30',
 					cover: 'https://img0.baidu.com/it/u=3411005750,1717082041&fm=253&app=138&f=JPEG?w=500&h=638'
 				},
 				{
 					author: '生活策展人',
-					action: '点赞了你的妙招',
+					action: '点赞了你的妙囊',
 					time: '昨天 10:15',
 					cover: 'https://img0.baidu.com/it/u=2305867823,4064004191&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=750'
 				},
@@ -95,13 +95,13 @@ export default {
 				},
 				{
 					author: '灵感收集者',
-					action: '收藏了你的妙招',
+					action: '收藏了你的妙囊',
 					time: '前天 18:00',
 					cover: 'https://gips0.baidu.com/it/u=3088465159,2087256888&fm=3074&app=3074&f=JPEG?w=1298&h=1689&type=normal&func=T'
 				},
 				{
 					author: '生活策展人',
-					action: '点赞了你的妙招',
+					action: '点赞了你的妙囊',
 					time: '昨天 10:15',
 					cover: 'https://img0.baidu.com/it/u=2305867823,4064004191&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=750'
 				},
@@ -113,19 +113,19 @@ export default {
 				},
 				{
 					author: '灵感收集者',
-					action: '收藏了你的妙招',
+					action: '收藏了你的妙囊',
 					time: '前天 18:00',
 					cover: 'https://gips0.baidu.com/it/u=3088465159,2087256888&fm=3074&app=3074&f=JPEG?w=1298&h=1689&type=normal&func=T'
 				},
 				{
 					author: '生活策展人',
-					action: '点赞了你的妙招',
+					action: '点赞了你的妙囊',
 					time: '昨天 10:15',
 					cover: 'https://img0.baidu.com/it/u=2305867823,4064004191&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=750'
 				},
 				{
 					author: '生活策展人',
-					action: '点赞了你的妙招',
+					action: '点赞了你的妙囊',
 					time: '昨天 10:15',
 					cover: 'https://img0.baidu.com/it/u=2305867823,4064004191&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=750'
 				},

@@ -99,10 +99,10 @@ export default {
         {
           id: 1,
           cover: 'https://gips0.baidu.com/it/u=3088465159,2087256888&fm=3074&app=3074&f=JPEG?w=1298&h=1689&type=normal&func=T',
-          author: '妙招小达人',
+          author: '妙囊小达人',
           title: '如何用一个柠檬让你的厨房焕然一新？',
           description: '这个方法我试了10次，每次都非常灵！🍋这个方法我试了10次，每次都非常灵！',
-          tags: ['#生活小妙招', '#居家清洁'],
+          tags: ['#生活小妙囊', '#居家清洁'],
           likes: '2.4k',
           comments: '158',
           collects: '892'

@@ -12,7 +12,7 @@
 				</view>
 			</view>
 			<view class="search-bar">
-				<text class="search-icon">🔍</text>
+				<image class="search-icon" src="/static/images/fdj.png" mode="aspectFit" />
 				<input class="search-input" placeholder="搜索感兴趣的妙囊" placeholder-class="search-placeholder" />
 			</view>
 		</view>
@@ -58,7 +58,7 @@
 						<image class="card-image" :src="item.image" mode="aspectFill" :style="{ height: item.height + 'rpx' }">
 						</image>
 						<view v-if="item.isVideo" class="video-play-btn">
-							<text class="play-icon">▶</text>
+							<image class="play-icon" src="/static/images/play.png" mode="aspectFit"></image>
 						</view>
 						<view class="card-content">
 							<text class="card-title">{{ item.title }}</text>
@@ -70,10 +70,10 @@
 									<text class="author-name">{{ item.author }}</text>
 								</view>
 								<view class="card-stats">
-									<text class="stat-item">
-										<text class="stat-icon">♡</text>
+									<view class="stat-item">
+										<image src="/static/images/heart.png" class="stat-icon" mode="aspectFit" />
 										<text class="stat-value">{{ item.likes }}</text>
-									</text>
+									</view>
 								</view>
 							</view>
 						</view>
@@ -96,10 +96,10 @@
 									<text class="author-name">{{ item.author }}</text>
 								</view>
 								<view class="card-stats">
-									<text class="stat-item">
-										<text class="stat-icon">♡</text>
+									<view class="stat-item">
+										<image src="/static/images/heart.png" class="stat-icon" mode="aspectFit" />
 										<text class="stat-value">{{ item.likes }}</text>
-									</text>
+									</view>
 								</view>
 							</view>
 						</view>
@@ -299,8 +299,8 @@ export default {
 }
 
 .search-icon {
-	font-size: 32rpx;
-	color: #999;
+	width: 36rpx;
+	height: 36rpx;
 	margin-right: 16rpx;
 }
 
@@ -589,8 +589,8 @@ export default {
 }
 
 .stat-icon {
-	font-size: 24rpx;
-	color: #ff6b6b;
+	width: 30rpx;
+	height: 30rpx;
 }
 
 .stat-value {
