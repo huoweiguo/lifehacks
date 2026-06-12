@@ -2,32 +2,14 @@
 	<view class="next-cropper">
 		<view @click="handleShake(fOperation)" class="next-cropper-target">
 			<slot v-if="$slots.default"></slot>
-			<image 
-				v-else
-				:src="imgSrc.imgSrc" 
-				class="active-avatar" 
-				mode="aspectFill"  
-				:style="imgStyle" 
-			/>
+			<image v-else :src="imgSrc.imgSrc" class="active-avatar" mode="aspectFill" :style="imgStyle" />
 		</view>
 		<view :style="{display: styleDisplay}" class="canvas-container">
-			<canvas
-				class="my-canvas"
-				canvas-id="avatar-canvas" 
-				id="avatar-canvas" 
-				:style="{top: styleTop, height: cvsStyleHeight}" 
-				disable-scroll="false" 
-			/>
-			<canvas
-				canvas-id="oper-canvas" 
-				id="oper-canvas" 
-				class="oper-canvas"
-				:style="{top: styleTop, height: cvsStyleHeight}" 
-				disable-scroll="false" 
-				@touchstart="fStart" 
-				@touchmove="fMove"
-				@touchend="fEnd"
-			/>
+			<canvas class="my-canvas" canvas-id="avatar-canvas" id="avatar-canvas"
+				:style="{top: styleTop, height: cvsStyleHeight}" disable-scroll="false" />
+			<canvas canvas-id="oper-canvas" id="oper-canvas" class="oper-canvas"
+				:style="{top: styleTop, height: cvsStyleHeight}" disable-scroll="false" @touchstart="fStart" @touchmove="fMove"
+				@touchend="fEnd" />
 		</view>
 		<view class="oper-wrapper" :style="{display: styleDisplay}">
 			<view class="btn-wrapper" v-if="showOper">
@@ -40,7 +22,7 @@
 
 <script>
 	import props from "./props.js";
-	
+
 	const tabHeight = 70;
 	export default {
 		name: "next-cropper",
@@ -126,9 +108,8 @@
 				uni.chooseMedia({
 					count: 1,
 					mediaType: ['image'],
-					sizeType: ['original', 'compressed'],
 					sourceType: ['album', 'camera'],
-					maxDuration: 1,
+					sizeType: ['compressed'],
 					success: (r) => {
 						uni.showLoading({
 							mask: true
@@ -162,9 +143,9 @@
 										return;
 									}
 									this.selStyle = style;
-				
+
 								}
-				
+
 								if (!!self.noBar) {
 									self.fDrawInit(true);
 								} else {
@@ -185,11 +166,15 @@
 								uni.hideLoading();
 							}
 						});
+					},
+					fail: (err) => {
+						console.log(err);
 					}
 				})
 			},
 			handleShake(fn) {
-				if(this.loading) return;
+				console.log(this.loading);
+				if (this.loading) return;
 				this.loading = true;
 				setTimeout(() => {
 					this.loading = false;
@@ -370,7 +355,7 @@
 						this.styleDisplay = 'flex';
 						this.styleTop = '0';
 						this.fDrawImage();
-						
+
 					}
 				});
 				// #endif
@@ -385,229 +370,232 @@
 				// #endif
 				this.$emit("avtinit");
 			},
-		fDrawImage() {
-			let tm_now = Date.now();
-			if ((tm_now - this.drawTm) < 20) return;
-			this.drawTm = tm_now;
-			let ctxCanvas = this.ctxCanvas;
-			ctxCanvas.setFillStyle('rgba(255, 255, 255, 0)');
-			ctxCanvas.fillRect(0, 0, this.windowWidth, this.windowHeight - tabHeight);
-			//中心点坐标
-			ctxCanvas.translate(this.posWidth + this.useWidth / 2, this.posHeight + this.useHeight / 2);
-			//比例缩放
-			ctxCanvas.scale(this.scaleSize, this.scaleSize);
-			ctxCanvas.drawImage(this.imgPath, -this.useWidth / 2, -this.useHeight / 2, this.useWidth, this.useHeight);
-			ctxCanvas.draw(false);
-		},
-		fHideImg() {
-			this.prvImg = '';
-			this.prvTop = '-10000px';
-			this.showOper = true;
-			this.prvImgData = null;
-			this.target = null;
-		},
-		fClose() {
-			this.styleDisplay = 'none';
-			this.styleTop = '-10000px';
-			this.hasSel = false;
-			this.fHideImg();
-			this.noBar || uni.showTabBar();
-		},
-		// #ifdef MP-WEIXIN
-		fStart(e) {
-			let touches = e.touches,
-				touch0 = touches[0],
-				touch1 = touches[1];
+			fDrawImage() {
+				let tm_now = Date.now();
+				if ((tm_now - this.drawTm) < 20) return;
+				this.drawTm = tm_now;
+				let ctxCanvas = this.ctxCanvas;
+				ctxCanvas.setFillStyle('rgba(255, 255, 255, 0)');
+				ctxCanvas.fillRect(0, 0, this.windowWidth, this.windowHeight - tabHeight);
+				//中心点坐标
+				ctxCanvas.translate(this.posWidth + this.useWidth / 2, this.posHeight + this.useHeight / 2);
+				//比例缩放
+				ctxCanvas.scale(this.scaleSize, this.scaleSize);
+				ctxCanvas.drawImage(this.imgPath, -this.useWidth / 2, -this.useHeight / 2, this.useWidth, this.useHeight);
+				ctxCanvas.draw(false);
 
-			this.touch0 = touch0;
-			this.touch1 = touch1;
+				console.log(999, this.imgPath);
+			},
+			fHideImg() {
+				this.prvImg = '';
+				this.prvTop = '-10000px';
+				this.showOper = true;
+				this.prvImgData = null;
+				this.target = null;
+			},
+			fClose() {
+				this.styleDisplay = 'none';
+				this.styleTop = '-10000px';
+				this.hasSel = false;
+				this.fHideImg();
+				this.noBar || uni.showTabBar();
+			},
+			// #ifdef MP-WEIXIN
+			fStart(e) {
+				let touches = e.touches,
+					touch0 = touches[0],
+					touch1 = touches[1];
 
-			if (touch1) {
-				let x = touch1.x - touch0.x,
-					y = touch1.y - touch0.y;
-				this.fgDistance = Math.sqrt(x * x + y * y);
-
-			}
-		},
-		// #endif
-		// #ifdef H5
-		fStart(e) {
-			let touches = e.touches,
-				touch0 = touches[0],
-				touch1 = touches[1];
-
-			this.touch0 = touch0;
-			this.touch1 = touch1;
-
-			if (touch1) {
-				let x = touch1.clientX - touch0.clientX,
-					y = touch1.clientY - touch0.clientY;
-				this.fgDistance = Math.sqrt(x * x + y * y);
-			}
-		},
-		// #endif
-		// #ifdef MP-WEIXIN
-		fMove(e) {
-			let touches = e.touches,
-				touch0 = touches[0],
-				touch1 = touches[1];
-
-			if (touch1) {
-				let x = touch1.x - touch0.x,
-					y = touch1.y - touch0.y,
-					fgDistance = Math.sqrt(x * x + y * y),
-					scaleSize = 0.005 * (fgDistance - this.fgDistance),
-					beScaleSize = this.scaleSize + scaleSize;
-
-				do {
-					if (!this.letScale) break;
-					if (beScaleSize < this.mnScale) break;
-					if (beScaleSize > this.mxScale) break;
-					this.scaleSize = beScaleSize;
-				} while (0);
-				this.fgDistance = fgDistance;
-
-				if (touch1.x !== touch0.x && this.letRotate) {
-					x = (this.touch1.y - this.touch0.y) / (this.touch1.x - this.touch0.x);
-					y = (touch1.y - touch0.y) / (touch1.x - touch0.x);
-					this.rotateDeg += Math.atan((y - x) / (1 + x * y)) * 180 / Math.PI;
-					this.touch0 = touch0;
-					this.touch1 = touch1;
-				}
-
-				this.fDrawImage();
-			} else if (this.touch0) {
-				let x = touch0.x - this.touch0.x,
-					y = touch0.y - this.touch0.y,
-					beX = this.posWidth + x,
-					beY = this.posHeight + y;
-				if (Math.abs(x) < 100 && !this.lckWidth) this.posWidth = beX;
-				if (Math.abs(y) < 100 && !this.lckHeight) this.posHeight = beY;
 				this.touch0 = touch0;
-				this.fDrawImage();
-			}
-		},
-		// #endif
-		// #ifdef H5
-		fMove(e) {
-			let touches = e.touches,
-				touch0 = touches[0],
-				touch1 = touches[1];
+				this.touch1 = touch1;
 
-			if (touch1) {
-				let x = touch1.clientX - touch0.clientX,
-					y = touch1.clientY - touch0.clientY,
-					fgDistance = Math.sqrt(x * x + y * y),
-					scaleSize = 0.005 * (fgDistance - this.fgDistance),
-					beScaleSize = this.scaleSize + scaleSize;
+				if (touch1) {
+					let x = touch1.x - touch0.x,
+						y = touch1.y - touch0.y;
+					this.fgDistance = Math.sqrt(x * x + y * y);
 
-				do {
-					if (!this.letScale) break;
-					if (beScaleSize < this.mnScale) break;
-					if (beScaleSize > this.mxScale) break;
-					this.scaleSize = beScaleSize;
-				} while (0);
-				this.fgDistance = fgDistance;
-
-				if (touch1.x !== touch0.x && this.letRotate) {
-					x = (this.touch1.clientY - this.touch0.clientY) / (this.touch1.clientX - this.touch0.clientX);
-					y = (touch1.clientY - touch0.clientY) / (touch1.clientX - touch0.clientX);
-					this.rotateDeg += Math.atan((y - x) / (1 + x * y)) * 180 / Math.PI;
-					this.touch0 = touch0;
-					this.touch1 = touch1;
 				}
+			},
+			// #endif
+			// #ifdef H5
+			fStart(e) {
+				let touches = e.touches,
+					touch0 = touches[0],
+					touch1 = touches[1];
 
-				this.fDrawImage();
-			} else if (this.touch0) {
-				let x = touch0.clientX - this.touch0.clientX,
-					y = touch0.clientY - this.touch0.clientY,
-					beX = this.posWidth + x,
-					beY = this.posHeight + y;
-				if (Math.abs(x) < 100 && !this.lckWidth) this.posWidth = beX;
-				if (Math.abs(y) < 100 && !this.lckHeight) this.posHeight = beY;
 				this.touch0 = touch0;
-				this.fDrawImage();
-			}
-		},
+				this.touch1 = touch1;
+
+				if (touch1) {
+					let x = touch1.clientX - touch0.clientX,
+						y = touch1.clientY - touch0.clientY;
+					this.fgDistance = Math.sqrt(x * x + y * y);
+				}
+			},
+			// #endif
+			// #ifdef MP-WEIXIN
+			fMove(e) {
+				let touches = e.touches,
+					touch0 = touches[0],
+					touch1 = touches[1];
+
+				if (touch1) {
+					let x = touch1.x - touch0.x,
+						y = touch1.y - touch0.y,
+						fgDistance = Math.sqrt(x * x + y * y),
+						scaleSize = 0.005 * (fgDistance - this.fgDistance),
+						beScaleSize = this.scaleSize + scaleSize;
+
+					do {
+						if (!this.letScale) break;
+						if (beScaleSize < this.mnScale) break;
+						if (beScaleSize > this.mxScale) break;
+						this.scaleSize = beScaleSize;
+					} while (0);
+					this.fgDistance = fgDistance;
+
+					if (touch1.x !== touch0.x && this.letRotate) {
+						x = (this.touch1.y - this.touch0.y) / (this.touch1.x - this.touch0.x);
+						y = (touch1.y - touch0.y) / (touch1.x - touch0.x);
+						this.rotateDeg += Math.atan((y - x) / (1 + x * y)) * 180 / Math.PI;
+						this.touch0 = touch0;
+						this.touch1 = touch1;
+					}
+
+					this.fDrawImage();
+				} else if (this.touch0) {
+					let x = touch0.x - this.touch0.x,
+						y = touch0.y - this.touch0.y,
+						beX = this.posWidth + x,
+						beY = this.posHeight + y;
+					if (Math.abs(x) < 100 && !this.lckWidth) this.posWidth = beX;
+					if (Math.abs(y) < 100 && !this.lckHeight) this.posHeight = beY;
+					this.touch0 = touch0;
+					this.fDrawImage();
+				}
+			},
+			// #endif
+			// #ifdef H5
+			fMove(e) {
+				let touches = e.touches,
+					touch0 = touches[0],
+					touch1 = touches[1];
+
+				if (touch1) {
+					let x = touch1.clientX - touch0.clientX,
+						y = touch1.clientY - touch0.clientY,
+						fgDistance = Math.sqrt(x * x + y * y),
+						scaleSize = 0.005 * (fgDistance - this.fgDistance),
+						beScaleSize = this.scaleSize + scaleSize;
+
+					do {
+						if (!this.letScale) break;
+						if (beScaleSize < this.mnScale) break;
+						if (beScaleSize > this.mxScale) break;
+						this.scaleSize = beScaleSize;
+					} while (0);
+					this.fgDistance = fgDistance;
+
+					if (touch1.x !== touch0.x && this.letRotate) {
+						x = (this.touch1.clientY - this.touch0.clientY) / (this.touch1.clientX - this.touch0.clientX);
+						y = (touch1.clientY - touch0.clientY) / (touch1.clientX - touch0.clientX);
+						this.rotateDeg += Math.atan((y - x) / (1 + x * y)) * 180 / Math.PI;
+						this.touch0 = touch0;
+						this.touch1 = touch1;
+					}
+
+					this.fDrawImage();
+				} else if (this.touch0) {
+					let x = touch0.clientX - this.touch0.clientX,
+						y = touch0.clientY - this.touch0.clientY,
+						beX = this.posWidth + x,
+						beY = this.posHeight + y;
+					if (Math.abs(x) < 100 && !this.lckWidth) this.posWidth = beX;
+					if (Math.abs(y) < 100 && !this.lckHeight) this.posHeight = beY;
+					this.touch0 = touch0;
+					this.fDrawImage();
+				}
+			},
 			// #endif
 			async fEnd(e) {
-			let self = this;
-			let touches = e.touches,
-				touch0 = touches && touches[0],
-				touch1 = touches && touches[1];
-			if (self.scaleSize < 1) {
-				let style = self.selStyle;
-				let imgRadio = self.imgWidth / self.imgHeight;
-				//高长宽短
-				if (imgRadio < 1 && self.scaleSize * self.useWidth < style.width) {
-					self.posWidth = style.left;
-					self.scaleSize = 1
+				let self = this;
+				let touches = e.touches,
+					touch0 = touches && touches[0],
+					touch1 = touches && touches[1];
+				if (self.scaleSize < 1) {
+					let style = self.selStyle;
+					let imgRadio = self.imgWidth / self.imgHeight;
+					//高长宽短
+					if (imgRadio < 1 && self.scaleSize * self.useWidth < style.width) {
+						self.posWidth = style.left;
+						self.scaleSize = 1
 						setTimeout(function() {
-						self.fDrawImage();
-					}, 100)
-				} else if (self.scaleSize * self.useHeight < style.width) {
-					//高短宽长
-					self.posHeight = style.top;
-					self.scaleSize = 1
+							self.fDrawImage();
+						}, 100)
+					} else if (self.scaleSize * self.useHeight < style.width) {
+						//高短宽长
+						self.posHeight = style.top;
+						self.scaleSize = 1
 						setTimeout(function() {
-						self.fDrawImage();
-					}, 100)
-				}
-			} else if (this.scaleSize == 1) {
-				let endWidth = this.posWidth - this.postFirst.posWidth,
-					firstWidth = this.postFirst.left - this.postFirst.posWidth;
-				let endHeight = this.posHeight - this.postFirst.posHeight,
-					firstHigth = this.postFirst.top - this.postFirst.posHeight;
-				if (endWidth > 0 && this.posWidth > this.postFirst.left) {
-					//右滑动过长
-					this.posWidth = this.postFirst.left;
-				} else if (endWidth < 0 && endWidth < firstWidth) {
-					//左滑动过长
-					this.posWidth = -this.postFirst.left + this.postFirst.posWidth * 2;
-				}
+							self.fDrawImage();
+						}, 100)
+					}
+				} else if (this.scaleSize == 1) {
+					let endWidth = this.posWidth - this.postFirst.posWidth,
+						firstWidth = this.postFirst.left - this.postFirst.posWidth;
+					let endHeight = this.posHeight - this.postFirst.posHeight,
+						firstHigth = this.postFirst.top - this.postFirst.posHeight;
+					if (endWidth > 0 && this.posWidth > this.postFirst.left) {
+						//右滑动过长
+						this.posWidth = this.postFirst.left;
+					} else if (endWidth < 0 && endWidth < firstWidth) {
+						//左滑动过长
+						this.posWidth = -this.postFirst.left + this.postFirst.posWidth * 2;
+					}
 
-				if (endHeight < 0 && this.posHeight < this.postFirst.top) {
-					//上滑动过长
-					this.posHeight = -this.postFirst.top + this.postFirst.posHeight * 2;
-				} else if (endHeight > 0 && endHeight > firstHigth) {
-					//下滑动过长
-					this.posHeight = this.postFirst.top;
-				}
+					if (endHeight < 0 && this.posHeight < this.postFirst.top) {
+						//上滑动过长
+						this.posHeight = -this.postFirst.top + this.postFirst.posHeight * 2;
+					} else if (endHeight > 0 && endHeight > firstHigth) {
+						//下滑动过长
+						this.posHeight = this.postFirst.top;
+					}
 					setTimeout(function() {
-					self.fDrawImage();
-				}, 100);
+						self.fDrawImage();
+					}, 100);
 
-			}
-			if (touch0) {
-				this.touch0 = touch0;
-			} else {
-				this.touch0 = null;
-				this.touch1 = null;
-			}
-		},
-		btop(base64) {
-				return new Promise(function(resolve, reject) {
-				var arr = base64.split(','),
-					mime = arr[0].match(/:(.*?);/)[1],
-					bstr = atob(arr[1]),
-					n = bstr.length,
-					u8arr = new Uint8Array(n);
-				while (n--) {
-					u8arr[n] = bstr.charCodeAt(n);
 				}
-				return resolve((window.URL || window.webkitURL).createObjectURL(new Blob([u8arr], {
-					type: mime
-				})));
-			});
-		},
+				if (touch0) {
+					this.touch0 = touch0;
+				} else {
+					this.touch0 = null;
+					this.touch1 = null;
+				}
+			},
+			btop(base64) {
+				return new Promise(function(resolve, reject) {
+					var arr = base64.split(','),
+						mime = arr[0].match(/:(.*?);/)[1],
+						bstr = atob(arr[1]),
+						n = bstr.length,
+						u8arr = new Uint8Array(n);
+					while (n--) {
+						u8arr[n] = bstr.charCodeAt(n);
+					}
+					return resolve((window.URL || window.webkitURL).createObjectURL(new Blob([u8arr], {
+						type: mime
+					})));
+				});
+			},
+		}
 	}
-}
 </script>
 
 <style scoped>
 	.next-cropper-target {
 		display: flex;
 	}
+
 	.canvas-container {
 		background-color: #000000;
 		position: fixed !important;
@@ -617,6 +605,7 @@
 		width: 100vw;
 		height: 100vh;
 	}
+
 	.my-canvas {
 		display: flex;
 		position: fixed !important;
